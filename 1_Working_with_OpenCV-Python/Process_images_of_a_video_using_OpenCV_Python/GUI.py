@@ -14,12 +14,12 @@ def main():
     layout = [
         [sg.Image(filename='', key='-IMAGE-')],
         [sg.Radio('None', 'Radio', True, size=(10, 1))],
-        [sg.Radio('Threshold', 'Radio', size=(20, 1), key='-THRESH-'),
+        [sg.Radio('Threshold', 'Radio', size=(15, 1), key='-THRESH-'),
          sg.Slider((0, 255), 128, 1, orientation='h', size=(40, 15), key='-THRESH SLIDER-')],
-        [sg.Radio('Gaussian Blurring', 'Radio', size=(20, 1), key='-BLUR-'),
+        [sg.Radio('Gaussian Blurring', 'Radio', size=(15, 1), key='-BLUR-'),
          sg.Slider((1, 11), 1, 1, orientation='h', size=(20, 15), key='-BLUR SLIDER-')],
-        [sg.Radio('Edge Detection', 'Radio', size=(20, 1), key='-EDGE-')],
-        [sg.Radio('Bitwise Operations', 'Radio', size=(20, 1), key='-BITWISE-'),
+        [sg.Radio('Edge Detection', 'Radio', size=(15, 1), key='-EDGE-')],
+        [sg.Radio('Bitwise Operations', 'Radio', size=(15, 1), key='-BITWISE-'),
          sg.Combo(['AND', 'OR', 'NOT', 'XOR'], size=(10, 1), key='-BITWISE_CHOICE-', default_value='AND')],
     ]
 
