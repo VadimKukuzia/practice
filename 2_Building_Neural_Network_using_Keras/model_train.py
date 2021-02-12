@@ -1,5 +1,3 @@
-# The full neural network code!
-###############################
 import numpy as np
 import mnist
 from tensorflow.keras.models import Sequential
