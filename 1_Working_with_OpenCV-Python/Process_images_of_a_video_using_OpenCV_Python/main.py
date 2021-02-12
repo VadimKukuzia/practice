@@ -1,6 +1,5 @@
 # importing the necessary libraries
 import cv2
-import numpy as np
 
 # Creating a VideoCapture object to read the video| 0 - video from camera
 cap = cv2.VideoCapture(0)
