@@ -275,3 +275,5 @@ dmypy.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,virtualenv,venv,pycharm,opencv
 /1. Working with OpenCV-Python/.idea/
+*.jpg
+*.png

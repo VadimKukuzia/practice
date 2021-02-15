@@ -2,8 +2,9 @@
 # import the necessary packages
 import cv2
 import argparse
+from datetime import datetime
 
-# python program_to_extract_particular_object_from_image.py --image images/image.jpg
+# python program_to_extract_particular_object_from_image.py --image images/cats.jpg
 
 # now let's initialize the list of reference point
 ref_point = []
@@ -42,6 +43,21 @@ clone = image.copy()
 cv2.namedWindow("image")
 cv2.setMouseCallback("image", shape_selection)
 
+
+def cut_n_save():
+    global ref_point
+
+    if len(ref_point) == 2:
+        crop_img = clone[ref_point[0][1]:ref_point[1][1], ref_point[0][0]:ref_point[1][0]]
+        cv2.imshow("crop_img", crop_img)
+        time = datetime.strftime(datetime.now(), "%d.%m.%Y_%H.%M.%S")
+        img = args['image'][args['image'].rfind('/') + 1:args['image'].rfind('.')]
+        new_img_src = args['image'].replace(img, img + '_cropped_' + time)
+        cv2.imwrite(new_img_src, crop_img)
+        cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 # keep looping until the 'q' key is pressed
 while True:
     # display the image and wait for a keypress
@@ -52,15 +68,13 @@ while True:
     if key == ord("r"):
         image = clone.copy()
 
-    # if the 'c' key is pressed, break from the loop
-    elif key == ord("c"):
+    if key == ord('q') or key == 27 or cv2.getWindowProperty("image", 0) < 0:
         break
 
-if len(ref_point) == 2:
-    crop_img = clone[ref_point[0][1]:ref_point[1][1], ref_point[0][0]:ref_point[1][0]]
-    cv2.imshow("crop_img", crop_img)
-    cv2.imwrite('images/crop_img.jpg', crop_img)
-    cv2.waitKey(0)
+    # if the 'c' key is pressed, break from the loop
+    elif key == ord("c"):
+        cut_n_save()
+        break
 
 # close all open windows
-cv2.destroyAllWindows()
+
