@@ -2,6 +2,8 @@ import numpy as np
 import mnist
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
+import matplotlib.pyplot as plt
+from random import randrange
 
 # Build the model.
 model = Sequential([
@@ -11,25 +13,26 @@ model = Sequential([
 ])
 
 # Load the model's saved weights.
-model.load_weights('model.h5')
+model.load_weights('models_n_results/model_19.02.2021_18.49.05/model.h5')
 
-train_images = mnist.train_images()
-train_labels = mnist.train_labels()
 test_images = mnist.test_images()
 test_labels = mnist.test_labels()
 
-# Normalize the images.
-train_images = (train_images / 255) - 0.5
 test_images = (test_images / 255) - 0.5
-
-# Flatten the images.
-train_images = train_images.reshape((-1, 784))
 test_images = test_images.reshape((-1, 784))
 
-predictions = model.predict(test_images[:10])
+random = randrange(5, len(test_images))
+predictions = model.predict(test_images[random-5:random])
+
 
 # Print our model's predictions.
-print(np.argmax(predictions, axis=1))  # [7, 2, 1, 0, 4]
+print('Predicted values:', np.argmax(predictions, axis=1))  # [7, 2, 1, 0, 4]
 
 # Check our predictions against the ground truths.
-print(test_labels[:10])  # [7, 2, 1, 0, 4]
+# print(test_labels[:5])  # [7, 2, 1, 0, 4]
+
+for i in range(random-5, random):
+    image = np.array(test_images[i], dtype=float)
+    pixels = image.reshape((28, 28))
+    plt.imshow(pixels, cmap='gray')
+    plt.show()

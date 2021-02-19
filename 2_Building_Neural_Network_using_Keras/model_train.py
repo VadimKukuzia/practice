@@ -3,7 +3,7 @@ from datetime import datetime
 import numpy as np
 import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
 from tensorflow.keras.utils import to_categorical
 import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
@@ -41,7 +41,7 @@ model.compile(
     loss='categorical_crossentropy',
     metrics=['accuracy'],
 )
-# TODO: Побаловаться с Tuning Hyperparameters
+
 
 # Train the model.
 history = model.fit(
@@ -76,13 +76,6 @@ fig.set_figwidth(10)
 ax1.grid()
 ax2.grid()
 
-# ax1.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
-# #  Устанавливаем интервал вспомогательных делений:
-# ax1.yaxis.set_minor_locator(ticker.MultipleLocator(0.05))
-#
-# ax2.yaxis.set_major_locator(ticker.MultipleLocator(0.1))
-# #  Устанавливаем интервал вспомогательных делений:
-# ax2.yaxis.set_minor_locator(ticker.MultipleLocator(0.05))
 
 ax1.plot(history.history['accuracy'])
 ax1.plot(history.history['val_accuracy'])
@@ -102,22 +95,7 @@ ax2.legend(['Train', 'Validation'], loc='best')
 
 plt.savefig(f'models_n_results/model_{time}/Accuracy_loss.png')
 plt.show()
-#  "Accuracy"
-# plt.plot(history.history['accuracy'])
-# plt.plot(history.history['val_accuracy'])
-# plt.title('model accuracy')
-# plt.ylabel('accuracy')
-# plt.xlabel('epoch')
-# plt.legend(['train', 'validation'], loc='upper left')
-# plt.show()
-# # "Loss"
-# plt.plot(history.history['loss'])
-# plt.plot(history.history['val_loss'])
-# plt.title('model loss')
-# plt.ylabel('loss')
-# plt.xlabel('epoch')
-# plt.legend(['train', 'validation'], loc='upper left')
-# plt.show()
+
 
 # Evaluate the model.
 model.evaluate(
@@ -131,14 +109,3 @@ with open(f'models_n_results/model_{time}/model.txt', 'w') as f:
 
 # Save the model to disk.
 model.save_weights(f'models_n_results/model_{time}/model.h5')
-# Load the model from disk later using:
-# model.load_weights('model.h5')
-
-# Predict on the first 5 test images.
-predictions = model.predict(test_images[:5])
-
-# Print our model's predictions.
-print(np.argmax(predictions, axis=1))  # [7, 2, 1, 0, 4]
-
-# Check our predictions against the ground truths.
-print(test_labels[:5])  # [7, 2, 1, 0, 4]
