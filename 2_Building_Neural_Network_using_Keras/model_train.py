@@ -11,17 +11,16 @@ from tensorflow.keras.optimizers import Adamax
 
 from tensorflow.keras.layers import Flatten
 
-
 mnist = tf.keras.datasets.mnist  # mnist is a dataset of 28x28 images of handwritten digits and their labels
-(train_images, train_labels), (test_images, test_labels) = mnist.load_data()  # unpacks images to x_train/x_test and labels to y_train/y_test
+(train_images, train_labels), (
+test_images, test_labels) = mnist.load_data()  # unpacks images to x_train/x_test and labels to y_train/y_test
 
 train_images = tf.keras.utils.normalize(train_images, axis=1)  # scales data between 0 and 1
 test_images = tf.keras.utils.normalize(test_images, axis=1)  # scales data between 0 and 1
 
-
 # Build the model.
 model = Sequential([
-    Flatten(),
+    Flatten(),  # takes our 28x28 and makes it 1x784
     Dense(128, activation='relu'),
     Dense(128, activation='relu'),
     Dense(10, activation='softmax'),
@@ -37,12 +36,11 @@ model.compile(
     metrics=['accuracy'],
 )
 
-
 # Train the model.
 history = model.fit(
     train_images,
     train_labels,
-    epochs=20,
+    epochs=10,
     validation_data=(test_images, test_labels)
 )
 
@@ -57,7 +55,6 @@ fig.set_figwidth(10)
 
 ax1.grid()
 ax2.grid()
-
 
 ax1.plot(history.history['accuracy'])
 ax1.plot(history.history['val_accuracy'])
@@ -78,7 +75,6 @@ ax2.legend(['Train', 'Validation'], loc='best')
 plt.savefig(f'models_n_results/model_{time}/Accuracy_loss.png')
 plt.show()
 
-
 # Evaluate the model.
 print('Model evaluate:')
 model.evaluate(
@@ -92,7 +88,6 @@ with open(f'models_n_results/model_{time}/model_evaluate.txt', 'w') as f:
             test_images,
             test_labels
         )
-
 
 with open(f'models_n_results/model_{time}/model.txt', 'w') as f:
     with redirect_stdout(f):
