@@ -1,3 +1,5 @@
+from contextlib import redirect_stdout
+
 import numpy as np
 import mnist
 from tensorflow.keras.models import Sequential
@@ -6,14 +8,18 @@ import matplotlib.pyplot as plt
 from random import randrange
 
 # Build the model.
+from tensorflow.python.keras.optimizer_v2.adamax import Adamax
+from tensorflow.python.keras.utils.np_utils import to_categorical
+
 model = Sequential([
     Dense(64, activation='relu', input_shape=(784,)),
+    Dense(64, activation='relu'),
     Dense(64, activation='relu'),
     Dense(10, activation='softmax'),
 ])
 
 # Load the model's saved weights.
-model.load_weights('models_n_results/model_19.02.2021_18.49.05/model.h5')
+model.load_weights('models_n_results/model_23.02.2021_12.55.52/model.h5')
 
 test_images = mnist.test_images()
 test_labels = mnist.test_labels()

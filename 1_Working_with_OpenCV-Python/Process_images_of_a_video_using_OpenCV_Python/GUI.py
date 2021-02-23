@@ -25,7 +25,7 @@ def main():
     # create the window and show it without the plot
     window = sg.Window('Process images of a video using OpenCV Python', layout)
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture('example.mp4')
 
     while True:
         event, values = window.read(timeout=20)

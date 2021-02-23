@@ -46,7 +46,7 @@ while cap.isOpened():
     BIT = cv2.bitwise_and(frame, frame, mask=mask)
     cv2.imshow('BIT', BIT)
 
-    #numpy_horizontal = np.hstack((frame, frame))
+    # numpy_horizontal = np.hstack((frame, frame))
     # cv2.imshow('Numpy Horizontal', numpy_horizontal)
 
     # define q as the exit button

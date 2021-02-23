@@ -28,6 +28,7 @@ test_images = test_images.reshape((-1, 784))
 model = Sequential([
     Dense(64, activation='relu', input_shape=(784,)),
     Dense(64, activation='relu'),
+    Dense(64, activation='relu'),
     Dense(10, activation='softmax'),
 ])
 print(model.summary())
@@ -98,10 +99,19 @@ plt.show()
 
 
 # Evaluate the model.
+print('Model evaluate:')
 model.evaluate(
     test_images,
     to_categorical(test_labels)
 )
+
+with open(f'models_n_results/model_{time}/model_evaluate.txt', 'w') as f:
+    with redirect_stdout(f):
+        model.evaluate(
+            test_images,
+            to_categorical(test_labels)
+        )
+
 
 with open(f'models_n_results/model_{time}/model.txt', 'w') as f:
     with redirect_stdout(f):
