@@ -36,13 +36,13 @@ model.compile(
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy'],
 )
-print(train_images.shape, train_labels.shape)
+
 
 # Train the model.
 history = model.fit(
     train_images,
     train_labels,
-    epochs=10,
+    epochs=20,
     validation_data=(test_images, test_labels)
 )
 
@@ -99,4 +99,4 @@ with open(f'models_n_results/model_{time}/model.txt', 'w') as f:
         model.summary()
 
 # Save the model to disk.
-model.save_weights(f'models_n_results/model_{time}/model.h5')
+model.save(f'models_n_results/model_{time}/')
