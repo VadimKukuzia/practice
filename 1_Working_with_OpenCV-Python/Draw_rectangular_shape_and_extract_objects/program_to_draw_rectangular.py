@@ -4,13 +4,12 @@ import cv2
 import numpy as np
 
 drawing = False  # true if mouse is pressed
-mode = True  # if True, draw rectangle.
 ix, iy = -1, -1
 
 
 # mouse callback function
 def draw_shape(event, x, y, flags, param):
-    global ix, iy, drawing, mode
+    global ix, iy, drawing
 
     if event == cv2.EVENT_LBUTTONDOWN:
         drawing = True
@@ -18,35 +17,26 @@ def draw_shape(event, x, y, flags, param):
 
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing:
-            if mode:
-                cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), 2)
-                a = x
-                b = y
-                print(ix, iy, a, b, x, y)
-                if a != x | b != y:
-                    cv2.rectangle(img, (ix, iy), (x, y), (0, 0, 0), -1)
-            else:
-                cv2.circle(img, (x, y), 5, (0, 0, 255), -1)
+            cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), 2)
+            a = x
+            b = y
+            if a != x | b != y:
+                cv2.rectangle(img, (ix, iy), (x, y), (0, 0, 0), -1)
+
 
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
-        if mode:
-            cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), 2)
-
-        else:
-            cv2.circle(img, (x, y), 5, (0, 0, 255), -1)
+        cv2.rectangle(img, (ix, iy), (x, y), (0, 255, 0), 2)
 
 
 img = np.zeros((512, 512, 3), np.uint8)
-cv2.namedWindow('image')
-cv2.setMouseCallback('image', draw_shape)
+cv2.namedWindow('Program to draw rectangular')
+cv2.setMouseCallback('Program to draw rectangular', draw_shape)
 
 while True:
-    cv2.imshow('image', img)
+    cv2.imshow('Program to draw rectangular', img)
     k = cv2.waitKey(1) & 0xFF
-    if k == ord('m'):
-        mode = not mode
-    elif k == 27:
+    if k == 27:
         break
 
 cv2.destroyAllWindows()

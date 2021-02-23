@@ -1,37 +1,31 @@
 from datetime import datetime
+import tensorflow as tf
 
-import numpy as np
-import mnist
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, MaxPooling2D, Flatten
-from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 from contextlib import redirect_stdout
 import os
 
 from tensorflow.keras.optimizers import Adamax
 
-train_images = mnist.train_images()
-train_labels = mnist.train_labels()
-test_images = mnist.test_images()
-test_labels = mnist.test_labels()
+from tensorflow.keras.layers import Flatten
 
-# Normalize the images.
-train_images = (train_images / 255) - 0.5
-test_images = (test_images / 255) - 0.5
 
-# Flatten the images.
-train_images = train_images.reshape((-1, 784))
-test_images = test_images.reshape((-1, 784))
+mnist = tf.keras.datasets.mnist  # mnist is a dataset of 28x28 images of handwritten digits and their labels
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()  # unpacks images to x_train/x_test and labels to y_train/y_test
+
+train_images = tf.keras.utils.normalize(train_images, axis=1)  # scales data between 0 and 1
+test_images = tf.keras.utils.normalize(test_images, axis=1)  # scales data between 0 and 1
+
 
 # Build the model.
 model = Sequential([
-    Dense(64, activation='relu', input_shape=(784,)),
-    Dense(64, activation='relu'),
-    Dense(64, activation='relu'),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(128, activation='relu'),
     Dense(10, activation='softmax'),
 ])
-print(model.summary())
 
 # Save model summary
 
@@ -39,31 +33,18 @@ print(model.summary())
 # Compile the model.
 model.compile(
     optimizer=Adamax(learning_rate=0.001),
-    loss='categorical_crossentropy',
+    loss='sparse_categorical_crossentropy',
     metrics=['accuracy'],
 )
-
+print(train_images.shape, train_labels.shape)
 
 # Train the model.
 history = model.fit(
     train_images,
-    to_categorical(train_labels),
+    train_labels,
     epochs=10,
-    batch_size=32,
-    validation_split=0.1,
-    validation_data=(test_images, to_categorical(test_labels))
+    validation_data=(test_images, test_labels)
 )
-
-print('Train accuracy: Min - ', min(history.history['accuracy']), ' |', 'Max - ', max(history.history['accuracy']))
-print('Validation accuracy: Min - ', min(history.history['val_accuracy']), ' |', 'Max - ',
-      max(history.history['val_accuracy']))
-print('Train loss: Max - ', max(history.history['loss']), ' |', 'Min - ', min(history.history['loss']))
-print('Validation loss: Max -', max(history.history['val_loss']), ' |', 'Min - ', min(history.history['val_loss']))
-# print(history.history.keys())
-# print(history.history['accuracy'])
-# print(history.history['val_accuracy'])
-# print(history.history['loss'])
-# print(history.history['val_loss'])
 
 # time for result saving. creating new model directory
 time = datetime.strftime(datetime.now(), "%d.%m.%Y_%H.%M.%S")
@@ -102,14 +83,14 @@ plt.show()
 print('Model evaluate:')
 model.evaluate(
     test_images,
-    to_categorical(test_labels)
+    test_labels
 )
 
 with open(f'models_n_results/model_{time}/model_evaluate.txt', 'w') as f:
     with redirect_stdout(f):
         model.evaluate(
             test_images,
-            to_categorical(test_labels)
+            test_labels
         )
 
 

@@ -1,5 +1,3 @@
-from contextlib import redirect_stdout
-
 import numpy as np
 import mnist
 from tensorflow.keras.models import Sequential
@@ -7,19 +5,17 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 from random import randrange
 
-# Build the model.
-from tensorflow.python.keras.optimizer_v2.adamax import Adamax
-from tensorflow.python.keras.utils.np_utils import to_categorical
+from tensorflow.keras.layers import Flatten
 
 model = Sequential([
-    Dense(64, activation='relu', input_shape=(784,)),
-    Dense(64, activation='relu'),
-    Dense(64, activation='relu'),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dense(128, activation='relu'),
     Dense(10, activation='softmax'),
 ])
 
 # Load the model's saved weights.
-model.load_weights('models_n_results/model_23.02.2021_12.55.52/model.h5')
+model.load_weights('models_n_results/model_23.02.2021_21.31.28/model.h5')
 
 test_images = mnist.test_images()
 test_labels = mnist.test_labels()
@@ -34,8 +30,7 @@ predictions = model.predict(test_images[random-5:random])
 # Print our model's predictions.
 print('Predicted values:', np.argmax(predictions, axis=1))  # [7, 2, 1, 0, 4]
 
-# Check our predictions against the ground truths.
-# print(test_labels[:5])  # [7, 2, 1, 0, 4]
+
 
 for i in range(random-5, random):
     image = np.array(test_images[i], dtype=float)

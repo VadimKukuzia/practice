@@ -31,13 +31,12 @@ def main():
         event, values = window.read(timeout=20)
         if event == 'Exit' or event == sg.WIN_CLOSED:
             break
-
         ret, frame = cap.read()
 
         if values['-THRESH-']:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             frame = cv2.adaptiveThreshold(frame, values['-THRESH SLIDER-'], cv2.ADAPTIVE_THRESH_MEAN_C,
-                                  cv2.THRESH_BINARY_INV, 11, 2)
+                                          cv2.THRESH_BINARY_INV, 11, 2)
         elif values['-BLUR-']:
             frame = cv2.GaussianBlur(frame, (21, 21), values['-BLUR SLIDER-'])
 
