@@ -12,8 +12,7 @@ from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.layers import Flatten
 
 mnist = tf.keras.datasets.mnist  # mnist is a dataset of 28x28 images of handwritten digits and their labels
-(train_images, train_labels), (
-test_images, test_labels) = mnist.load_data()  # unpacks images to x_train/x_test and labels to y_train/y_test
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()  # unpacks images to x_train/x_test and labels to y_train/y_test
 
 train_images = tf.keras.utils.normalize(train_images, axis=1)  # scales data between 0 and 1
 test_images = tf.keras.utils.normalize(test_images, axis=1)  # scales data between 0 and 1
